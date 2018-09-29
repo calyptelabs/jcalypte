@@ -19,9 +19,19 @@ Se for clonar o projeto, siga os seguintes passos:
 Se for utilizado o Maven, deve ser informado no pom.xml:
 
 ```
+<repositories>
+    <repository>
+        <id>calypte-repo</id>
+        <name>Calypte repository.</name>
+        <url>https://calypte.sourceforge.io/maven/2</url>
+    </repository>
+</repositories>
+
+...
+
 <dependency>
     <groupId>calypte</groupId>
     <artifactId>jcalypte</artifactId>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
 </dependency>
 ```
