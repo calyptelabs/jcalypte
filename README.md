@@ -20,11 +20,11 @@ Se for utilizado o Maven, deve ser informado no pom.xml:
 
 ```
 <repositories>
-    <repository>
-        <id>calypte-repo</id>
-        <name>Calypte repository.</name>
-        <url>https://calypte.sourceforge.io/maven/2</url>
-    </repository>
+	<repository>
+	<id>calypte-repo</id>
+		<name>Calypte repository.</name>
+		<url>https://calypte.sourceforge.io/maven/2</url>
+	</repository>
 </repositories>
 
 ...
