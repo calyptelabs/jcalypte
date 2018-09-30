@@ -244,6 +244,18 @@ class CalypteSender {
 		
 		out.flush();
 	}
+
+	public void executeFlush() throws IOException{
+		
+		/*
+			flush\r\n
+		 */
+		
+		out.write(CalypteConnectionImp.FLUSH_COMMAND_DTA);	
+		out.write(CalypteConnectionImp.CRLF_DTA);
+		
+		out.flush();
+	}
 	
 	private byte[] toBytes(Object value) throws IOException{
         ObjectOutputStream out     = null;

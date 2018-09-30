@@ -201,6 +201,10 @@ class CalypteReceiver {
 	public void processRollbackTransactionResult() throws IOException, CacheException{
 		this.processDefaultTransactionCommandResult();
 	}
+
+	public void processFlushResult() throws IOException, CacheException{
+		this.processDefaultTransactionCommandResult();
+	}
 	
 	public void processDefaultTransactionCommandResult() throws IOException, CacheException{
 		

@@ -177,6 +177,12 @@ public interface CalypteConnection {
      * modo de confirmação automática estiver ligada.
      */
     void rollback() throws CacheException;
+
+    /**
+     * Limpa o cache.
+     * @throws CacheException Lançado se ocorrer alguma falha ao tentar limpar o cache.
+     */
+    void flush() throws CacheException;
     
     /**
      * Obtém o endereço do servidor.
@@ -189,6 +195,5 @@ public interface CalypteConnection {
      * @return Porta do servidor.
      */
     int getPort();
-    
     
 }

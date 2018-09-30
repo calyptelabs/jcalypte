@@ -51,6 +51,8 @@ class CalypteConnectionImp implements CalypteConnection{
 
     public static final byte[] BEGIN_TX_COMMAND_DTA      = "begin".getBytes();
 
+    public static final byte[] FLUSH_COMMAND_DTA         = "flush".getBytes();
+    
     public static final byte[] COMMIT_TX_COMMAND_DTA     = "commit".getBytes();
 
     public static final byte[] ROLLBACK_TX_COMMAND_DTA   = "rollback".getBytes();
@@ -65,7 +67,7 @@ class CalypteConnectionImp implements CalypteConnection{
     
     public static final byte[] REPLACE_SUCCESS_DTA       = "replaced".getBytes();
 
-    public static final byte[] NOT_STORED_DTA             = "not_stored".getBytes();
+    public static final byte[] NOT_STORED_DTA            = "not_stored".getBytes();
     
     public static final byte[] NOT_FOUND_DTA             = "not_found".getBytes();
     
@@ -360,6 +362,19 @@ class CalypteConnectionImp implements CalypteConnection{
     		throw new CacheException(e);
     	}
     }
+
+	public void flush() throws CacheException {
+    	try{
+    		sender.executeFlush();
+    		receiver.processFlushResult();
+    	}
+    	catch(CacheException e){
+    		throw e;
+    	}
+    	catch(Throwable e){
+    		throw new CacheException(e);
+    	}
+	}
     
     public String getHost() {
         return host;
@@ -438,4 +453,5 @@ class CalypteConnectionImp implements CalypteConnection{
     		super.finalize();
     	}
     }
+
 }

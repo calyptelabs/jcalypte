@@ -94,17 +94,21 @@ class CalypteConnectionProxy implements CalypteConnection{
 	}
 
 	public boolean isAutoCommit() throws CacheException {
-		return this.con.isAutoCommit();
+		return con.isAutoCommit();
 	}
 
 	public void commit() throws CacheException {
-		this.con.commit();
+		con.commit();
 	}
 
 	public void rollback() throws CacheException {
-		this.con.rollback();
+		con.rollback();
 	}
 
+	public void flush() throws CacheException {
+		con.flush();
+	}
+	
 	public String getHost() {
 		return this.con.getHost();
 	}
@@ -121,4 +125,5 @@ class CalypteConnectionProxy implements CalypteConnection{
 			super.finalize();
 		}
 	}
+
 }

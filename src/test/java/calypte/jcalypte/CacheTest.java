@@ -282,5 +282,43 @@ public class CacheTest extends TestCase{
 			}
 		}
 	}
+
+	public void testFlush() throws Throwable{
+		String prefixKEY = "testFlush:";
+		CalypteConnection con = new CalypteConnectionImp(SERVER_HOST, SERVER_PORT);
+
+		//verifico que nenhum item existe
+		for(int i=0;i<10;i++) {
+			String key = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
+			Object o = con.get(key);
+			assertNull(o);
+		}
+
+		//insere todos os itens
+		for(int i=0;i<10;i++) {
+			String key   = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
+			String value = VALUE + ":" + Integer.toString(i, Character.MAX_RADIX);
+			con.put(key, value, 0, 0);
+		}
+		
+		//verifica se todos os itens foram inseridos
+		for(int i=0;i<10;i++) {
+			String key   = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
+			String value = VALUE + ":" + Integer.toString(i, Character.MAX_RADIX);
+			Object o = con.get(key);
+			assertEquals(value, o);
+		}
+
+		//limpa o cache
+		con.flush();
+		
+		//Verifica o sucesso do flush
+		for(int i=0;i<10;i++) {
+			String key   = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
+			Object o = con.get(key);
+			assertNull(o);
+		}
+		
+	}
 	
 }
