@@ -287,7 +287,13 @@ public class CacheTest extends TestCase{
 		String prefixKEY = "testFlush:"; 
 		CalypteConnection con = new CalypteConnectionImp(SERVER_HOST, SERVER_PORT);
 
-		//verifico que nenhum item existe
+	    //remove todos os itens
+		for(int i=0;i<10;i++) {
+			String key = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
+			con.remove(key);
+		}
+		
+	    //verifica se nenhum item existe
 		for(int i=0;i<10;i++) {
 			String key = prefixKEY + Integer.toString(i, Character.MAX_RADIX);
 			Object o = con.get(key);
