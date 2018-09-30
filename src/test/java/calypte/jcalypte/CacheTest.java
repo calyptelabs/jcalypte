@@ -284,7 +284,7 @@ public class CacheTest extends TestCase{
 	}
 
 	public void testFlush() throws Throwable{
-		String prefixKEY = "testFlush:";
+		String prefixKEY = "testFlush:"; 
 		CalypteConnection con = new CalypteConnectionImp(SERVER_HOST, SERVER_PORT);
 
 		//verifico que nenhum item existe
