@@ -91,7 +91,8 @@ public class CalypteConnectionPool {
     private CalypteConnection createConnection(String host, int port, StreamFactory streamFactory) throws CacheException{
         CalypteConnectionImp con = new CalypteConnectionImp(host, port, streamFactory);
         con.connect();
-        return new CalypteConnectionProxy(con, this);
+        return con;
+        //return new CalypteConnectionProxy(con, this);
     }
     
     /**
@@ -106,16 +107,16 @@ public class CalypteConnectionPool {
 	        CalypteConnection con = this.instances.poll();
 	        
 	        if(con != null)
-	            return con;
+	            return new CalypteConnectionProxy(con, this);
 	        else{
 	            synchronized(this){
 	                if(this.createdInstances < this.maxInstances){
 	                    con = createConnection(host, port, this.streamFactory);
 	                    this.createdInstances++;
-	                    return con;
+	                    return new CalypteConnectionProxy(con, this);
 	                }
 	            }
-	            return this.instances.take();
+	            return new CalypteConnectionProxy(this.instances.take(), this);
 	        }
     	}
     	catch(Throwable e){
@@ -136,16 +137,18 @@ public class CalypteConnectionPool {
 	        CalypteConnection con = this.instances.poll();
 	        
 	        if(con != null)
-	            return con;
+	            return new CalypteConnectionProxy(con, this);
 	        else{
 	            synchronized(this){
 	                if(this.createdInstances < this.maxInstances){
 	                    con = createConnection(host, port, this.streamFactory);
 	                    this.createdInstances++;
-	                    return con;
+	                    return new CalypteConnectionProxy(con, this);
 	                }
-	                else
-	                    return this.instances.poll(l, tu);
+	                else {
+	                    con = this.instances.poll(l, tu);
+	                    return con == null? null : new CalypteConnectionProxy(con, this);
+	                }
 	            }
 	        }
     	}
@@ -162,7 +165,12 @@ public class CalypteConnectionPool {
     void release(CalypteConnection con){
     	synchronized(this){
 	        try{
-	            this.instances.put(new CalypteConnectionProxy(con, this));
+	        	if(!con.isClosed()) {
+		            this.instances.put(con);
+	        	}
+	        	else {
+	        		this.shutdown(con);
+	        	}
 	        }
 	        catch(Throwable e){
 	        	e.printStackTrace();
