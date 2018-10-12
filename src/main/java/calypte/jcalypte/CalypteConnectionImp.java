@@ -118,13 +118,13 @@ class CalypteConnectionImp implements CalypteConnection{
 	        
 	        this.socket.setTcpNoDelay(true);
 	        this.socket.setTcpNoDelay(true);
-	        this.socket.setSendBufferSize(8*1024);
-	        this.socket.setReceiveBufferSize(8*1024);
+	        this.socket.setSendBufferSize(6*1024);
+	        this.socket.setReceiveBufferSize(6*1024);
 	        this.socket.setKeepAlive(false);
 	        this.socket.setOOBInline(true);
 	        
-	        this.sender     = new CalypteSender(socket, streamFactory, 8*1024);
-	        this.receiver   = new CalypteReceiver(socket, streamFactory, 8*1024);
+	        this.sender     = new CalypteSender(socket, streamFactory, 6*1024);
+	        this.receiver   = new CalypteReceiver(socket, streamFactory, 6*1024);
 	        this.closed     = false;
     	}
     	catch(Throwable e){

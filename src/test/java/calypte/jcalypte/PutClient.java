@@ -37,7 +37,7 @@ public class PutClient implements Runnable{
 				con = pool.getConnection();
 				long key      = keyCount.getAndIncrement();
 				String strKey = Long.toString(key, Character.MAX_RADIX);
-				con.put(strKey, strKey + ":" + value, 0, 0);
+				con.put(strKey, strKey + ":" + value + ":" + strKey, 10000, 0);
 			}
 			catch(Throwable e){
 				e.printStackTrace();

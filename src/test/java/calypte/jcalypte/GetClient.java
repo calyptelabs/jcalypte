@@ -42,7 +42,7 @@ public class GetClient implements Runnable{
 				String strKey = Long.toString(key, Character.MAX_RADIX);
 				String value  = (String)con.get(strKey);
 				if(value != null){
-					TestCase.assertEquals(strKey + ":" + this.value, value);
+					TestCase.assertEquals(strKey + ":" + this.value + ":" + strKey, value);
 				}
 			}
 			catch(Throwable e){
