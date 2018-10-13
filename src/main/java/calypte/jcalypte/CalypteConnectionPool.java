@@ -91,6 +91,7 @@ public class CalypteConnectionPool {
     private CalypteConnection createConnection(String host, int port, StreamFactory streamFactory) throws CacheException{
         CalypteConnectionImp con = new CalypteConnectionImp(host, port, streamFactory);
         con.connect();
+        createdInstances++;
         return con;
         //return new CalypteConnectionProxy(con, this);
     }
@@ -104,15 +105,16 @@ public class CalypteConnectionPool {
     public CalypteConnection getConnection() throws CacheException{
         
     	try{
+    		
 	        CalypteConnection con = this.instances.poll();
 	        
-	        if(con != null)
+	        if(con != null) {
 	            return new CalypteConnectionProxy(con, this);
+	        }
 	        else{
 	            synchronized(this){
 	                if(this.createdInstances < this.maxInstances){
 	                    con = createConnection(host, port, this.streamFactory);
-	                    this.createdInstances++;
 	                    return new CalypteConnectionProxy(con, this);
 	                }
 	            }
@@ -142,14 +144,11 @@ public class CalypteConnectionPool {
 	            synchronized(this){
 	                if(this.createdInstances < this.maxInstances){
 	                    con = createConnection(host, port, this.streamFactory);
-	                    this.createdInstances++;
 	                    return new CalypteConnectionProxy(con, this);
 	                }
-	                else {
-	                    con = this.instances.poll(l, tu);
-	                    return con == null? null : new CalypteConnectionProxy(con, this);
-	                }
 	            }
+                con = this.instances.poll(l, tu);
+                return con == null? null : new CalypteConnectionProxy(con, this);
 	        }
     	}
     	catch(Throwable e){
@@ -192,9 +191,8 @@ public class CalypteConnectionPool {
 	    		ex.printStackTrace();
 	    	}
 	    	finally{
-		        if(this.instances.remove(con)){
-		        	this.createdInstances--;
-		        }
+		        instances.remove(con);
+		        createdInstances--;
 	    	}
     	}
     }
@@ -202,7 +200,13 @@ public class CalypteConnectionPool {
     /**
      * Destrói o pool de conexões.
      */
-    public synchronized void shutdown(){
+    public void shutdown(){
+    	synchronized (this) {
+    		CalypteConnection con;
+    		while((con = instances.poll()) != null) {
+    			shutdown(con);
+    		}
+		}
     }
     
 }

@@ -115,12 +115,10 @@ class CalypteConnectionImp implements CalypteConnection{
     public void connect() throws CacheException{
     	try{
 	        this.socket     = new Socket(this.getHost(), this.getPort());
-	        
-	        this.socket.setTcpNoDelay(true);
 	        this.socket.setTcpNoDelay(true);
 	        this.socket.setSendBufferSize(6*1024);
 	        this.socket.setReceiveBufferSize(6*1024);
-	        this.socket.setKeepAlive(false);
+	        //this.socket.setKeepAlive(false);
 	        this.socket.setOOBInline(true);
 	        
 	        this.sender     = new CalypteSender(socket, streamFactory, 6*1024);
