@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CalypteConnectionPool {
     
-    private int createdInstances;
+    private volatile int createdInstances;
     
     private final int minInstances;
     
@@ -82,8 +82,7 @@ public class CalypteConnectionPool {
         
         for(int i=0;i<this.minInstances;i++){
             CalypteConnection con = createConnection(host, port, streamFactory);
-            this.instances.add(con);
-            this.createdInstances++;
+            instances.add(con);
         }
         
     }
@@ -105,7 +104,6 @@ public class CalypteConnectionPool {
     public CalypteConnection getConnection() throws CacheException{
         
     	try{
-    		
 	        CalypteConnection con = this.instances.poll();
 	        
 	        if(con != null) {
@@ -118,7 +116,8 @@ public class CalypteConnectionPool {
 	                    return new CalypteConnectionProxy(con, this);
 	                }
 	            }
-	            return new CalypteConnectionProxy(this.instances.take(), this);
+	            con = this.instances.take();
+	            return new CalypteConnectionProxy(con, this);
 	        }
     	}
     	catch(Throwable e){

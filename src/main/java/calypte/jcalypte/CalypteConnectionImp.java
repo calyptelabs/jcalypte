@@ -109,7 +109,6 @@ class CalypteConnectionImp implements CalypteConnection{
         this.host 			= host;
         this.port 			= port;
         this.streamFactory 	= streamFactory;
-        this.connect();
     }
     
     public void connect() throws CacheException{
