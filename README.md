@@ -32,6 +32,6 @@ Se for utilizado o Maven, deve ser informado no pom.xml:
 <dependency>
     <groupId>calypte</groupId>
     <artifactId>jcalypte</artifactId>
-    <version>1.0.0.4</version>
+    <version>1.0.0.5</version>
 </dependency>
 ```
